@@ -56,7 +56,7 @@ def get_stock_direction_and_percentage_change(prices):
     uses the stock prices to train the AI using selected algorithm and
     determines whether the stock price will go up (1) or down (0)
     """
-    # Placeholder - SJ
+    # Placeholder variables - SJ
     direction = 0
     percentage_change = 0.0
 
