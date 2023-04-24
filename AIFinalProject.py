@@ -50,15 +50,12 @@ def get_stock_historical_prices(data):
     
     return prices
 
-# This is a function that needs editing to work with a training algorithm - SJ
+# This is a function that I might refactor and delete later since it is a bit redundant - SJ
 def get_stock_direction_and_percentage_change(prices):
     """
-    uses the stock prices to train the AI using selected algorithm and
+    uses the stock prices to train the AI using two functions and
     determines whether the stock price will go up (1) or down (0)
     """
-    # Placeholder variables - SJ
-    direction = 0
-    percentage_change = 0.0
 
     # cuts the numpy array down to the last 5 years of historical data
     # not sure what amount of data we want to feed the algorithm yet
@@ -68,7 +65,32 @@ def get_stock_direction_and_percentage_change(prices):
     # algorithm n stuff go vroom here - SJ
     
     # once complete, return the direction and percentage change - SJ
-    return direction, percentage_change
+    return get_stock_direction_change(prices_last_5_years), get_stock_percentage_change(prices_last_5_years)
+
+# This is a function to learn from the given data to determine the direction of price change
+def get_stock_direction_change(prices_x_years):
+    """
+    This will run the data through an algorithm and determine the direction of change
+    given the historical pricing data fed to it
+    """
+    # placeholder variable - SJ
+    direction = 0
+
+    # algorithm go vroom to determine stock price direction
+
+    return direction
+
+def get_stock_percentage_change(prices_x_years):
+    """
+    This will run the data through an algorithm and determine the percentage of change
+    given the historical pricing data fed to it
+    """
+    # placeholder variable for percentage - SJ
+    percentage_change = 0.0
+
+    # algorithm go vroom to determine stock price change
+
+    return percentage_change
 
 # This will check the stock based on the symbol the user enters in the command line, 
 # We will need to modify this probably to check if a stock symbol is a valid one - SJ
