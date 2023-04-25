@@ -49,9 +49,13 @@ def get_stock_historical_prices(data):
     returns a numpy array containing the historical prices set on a specified interval
     from the extraced json respose
     """
+    # change the case of the Interval value to match 
+    first_letter = INTERVAL[0]
+    rest_of_word = INTERVAL[1:].lower()
+    Interval = first_letter + rest_of_word
 
     prices = list()
-    for date, info in data[f"Time Series ({INTERVAL})"].items():
+    for date, info in data[f"Time Series ({Interval})"].items():
         # gets the closing price of the stock for the specified interval as float - SJ
         price = float(info["4. close"])
         prices.append(price)
@@ -100,15 +104,15 @@ def get_stock_direction_change(prices_x_years):
     x_train, x_test, y_train, y_test = train_test_split(x, up_or_down, test_size=0.1, random_state=69)
     gaussian_nb.fit(x_train, y_train)
     
-    # Make a prediction with Gaussian Naive Bayes (modified from ChatGPT)
+    # Make a prediction with Gaussian Naive Bayes for next day (modified from ChatGPT)
     y_prediction = gaussian_nb.predict(x_test)
-    
+
     # compare the actual data vs the prediction to determine the accuracy of the model
     # I got this idea from ChatGPT
     accuracy = np.mean(y_prediction == y_test)
     
     # return whether the price went up or down (binary)
-    return y_prediction
+    return y_prediction[0]
 
 def get_stock_percentage_change(prices_x_years):
     """
@@ -125,7 +129,7 @@ def get_stock_percentage_change(prices_x_years):
 # This will check the stock based on the symbol the user enters in the command line, 
 # We will need to modify this probably to check if a stock symbol is a valid one - SJ
 
-stock_symbol = input("Please enter a stock symbol you want to check")
+stock_symbol = input("Please enter a stock symbol you want to check\n").upper()
 historical_prices = get_stock_historical_prices(get_stock_data(stock_symbol))
 stock_direction, percentage_change = get_stock_direction_and_percentage_change(historical_prices)
 if (stock_direction == 1):
