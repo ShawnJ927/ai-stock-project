@@ -12,6 +12,12 @@ us somewhere to start.
 
 import requests
 import numpy as np
+# These imports were suggested by a ChatGPT search - SJ
+# Not sure if we're allowed to use them or if we're supposed to build our own code for them
+# To install them on pc, I used pip install scikit-learn
+from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.model_selection import train_test_split
 
 # This is our API Key and Time Interval for the stock data - SJ
 API_KEY = "VG7A8JAI80Y6VTCA"
@@ -29,7 +35,12 @@ def get_stock_data(symbol):
 
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_{INTERVAL.upper()}_ADJUSTED&symbol={symbol}&outputsize=full&apikey={API_KEY}" 
     response = requests.get(url)
-    stock_data = response.json()
+
+    # check if response is successful, may want to rewrite this - SJ
+    if response.status_code == 200:
+        stock_data = response.json()
+    else:
+        print("Error: ", response.status_code, " - response request unsuccessful")
 
     return stock_data
 
@@ -73,11 +84,29 @@ def get_stock_direction_change(prices_x_years):
     This will run the data through an algorithm and determine the direction of change
     given the historical pricing data fed to it
     """
-    # placeholder variable - SJ
+    # placeholder variables - SJ
+    # calculate the change in price for each day
+    difference = np.diff(prices_x_years)
+    # calculate if the price went up or down
+    up_or_down = np.where(difference > 0.0, 1, 0) # if the price is > 0, return 1, else 0
     direction = 0
+    gaussian_nb = GaussianNB() # gaussian naive bayes algorithm
+    x = difference[:-1].reshape(-1,1) 
 
-    # algorithm go vroom to determine stock price direction
+    # Use Naive Bayes Algorithm to train
+    # Split the data into training and testing data#
+    # This is with Gaussian 
+    x_train, x_test, y_train, y_test = train_test_split(x, up_or_down, test_size=0.1, random_state=69)
+    gaussian_nb.fit(x_train, y_train)
+    
+    # Make a prediction with Gaussian Naive Bayes
+    y_prediction = gaussian_nb.predict(x_test)
 
+    # compare the actual data vs the prediction to determine the accuracy of the model
+    # I got this idea from ChatGPT
+    accuracy = np.mean(y_prediction == y_test)
+    
+    # determine the price change for the 
     return direction
 
 def get_stock_percentage_change(prices_x_years):
