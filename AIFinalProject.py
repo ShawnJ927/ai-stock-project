@@ -17,6 +17,7 @@ import numpy as np
 # To install them on pc, I used pip install scikit-learn
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import BernoulliNB
+from sklearn.linear_model import LogisticRegression 
 from sklearn.model_selection import train_test_split
 
 # This is our API Key and Time Interval for the stock data - SJ
@@ -108,7 +109,7 @@ def get_stock_direction_change(prices_x_years):
     y_prediction = gaussian_nb.predict(x_test)
 
     # compare the actual data vs the prediction to determine the accuracy of the model
-    # I got this idea from ChatGPT
+    # I got this ide from ChatGPT
     accuracy = np.mean(y_prediction == y_test)
     
     # return whether the price went up or down (binary)
@@ -133,6 +134,6 @@ stock_symbol = input("Please enter a stock symbol you want to check\n").upper()
 historical_prices = get_stock_historical_prices(get_stock_data(stock_symbol))
 stock_direction, percentage_change = get_stock_direction_and_percentage_change(historical_prices)
 if (stock_direction == 1):
-    print(f'The stock price will increase approximately {percentage_change:.2f}%.')
+    print(f'The stock price for {stock_symbol} is predicted to increase approximately {percentage_change:.2f}%.')
 else:
-    print(f'The stock price will decrease approximately {percentage_change:.2f}%.')
+    print(f'The stock price for {stock_symbol} is predicted to decrease approximately {percentage_change:.2f}%.')
