@@ -13,8 +13,8 @@ us somewhere to start.
 import requests
 import numpy as np
 
-# Replace empty API_Key with Alpha Vantage API key once we have it - SJ
-API_KEY = ""
+# This is our API Key and Time Interval for the stock data - SJ
+API_KEY = "VG7A8JAI80Y6VTCA"
 INTERVAL = "DAILY"
 
 # This is a sample function that we might be able to use to build on or change to fit other functions - SJ
