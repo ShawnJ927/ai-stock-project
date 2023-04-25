@@ -102,12 +102,12 @@ def get_stock_direction_change(prices_x_years):
     # Use Naive Bayes Algorithm to train
     # Split the data into training and testing data for the prediction model
     # This is with Gaussian 
-    x_train, x_test, y_train, y_test = train_test_split(x, up_or_down, test_size=0.1, random_state=69)
+    x_train, x_test, y_train, y_test = train_test_split(x, up_or_down, test_size=.2, random_state=69, shuffle=False)
     gaussian_nb.fit(x_train, y_train)
     
     # Make a prediction with Gaussian Naive Bayes for next day (modified from ChatGPT)
     y_prediction = gaussian_nb.predict(x_test)
-
+    print("this is the the prediction array", y_prediction)
     # compare the actual data vs the prediction to determine the accuracy of the model
     # I got this ide from ChatGPT
     accuracy = np.mean(y_prediction == y_test)
