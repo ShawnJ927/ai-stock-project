@@ -87,27 +87,28 @@ def get_stock_direction_change(prices_x_years):
     # placeholder variables - SJ
     # calculate the change in price for each day
     difference = np.diff(prices_x_years)
-    # calculate if the price went up or down
-    up_or_down = np.where(difference > 0.0, 1, 0) # if the price is > 0, return 1, else 0
-    direction = 0
+    # exclude the first element from the array to make data for next day
+    up_or_down = np.where(difference[1:] > 0.0, 1, 0) # if the price is > 0, return 1, else 0
+    
     gaussian_nb = GaussianNB() # gaussian naive bayes algorithm
+    # input for current day's data by excluding the last element in the array
     x = difference[:-1].reshape(-1,1) 
 
     # Use Naive Bayes Algorithm to train
-    # Split the data into training and testing data#
+    # Split the data into training and testing data for the prediction model
     # This is with Gaussian 
     x_train, x_test, y_train, y_test = train_test_split(x, up_or_down, test_size=0.1, random_state=69)
     gaussian_nb.fit(x_train, y_train)
     
-    # Make a prediction with Gaussian Naive Bayes
+    # Make a prediction with Gaussian Naive Bayes (modified from ChatGPT)
     y_prediction = gaussian_nb.predict(x_test)
-
+    
     # compare the actual data vs the prediction to determine the accuracy of the model
     # I got this idea from ChatGPT
     accuracy = np.mean(y_prediction == y_test)
     
-    # determine the price change for the 
-    return direction
+    # return whether the price went up or down (binary)
+    return y_prediction
 
 def get_stock_percentage_change(prices_x_years):
     """
