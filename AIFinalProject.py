@@ -16,6 +16,7 @@ import numpy as np
 # Not sure if we're allowed to use them or if we're supposed to build our own code for them
 # To install them on pc, I used pip install scikit-learn
 from sklearn.naive_bayes import GaussianNB
+from hmmlearn import hmm
 from sklearn.naive_bayes import BernoulliNB
 from sklearn.linear_model import LogisticRegression 
 from sklearn.model_selection import train_test_split
@@ -120,10 +121,27 @@ def get_stock_percentage_change(prices_x_years):
     This will run the data through an algorithm and determine the percentage of change
     given the historical pricing data fed to it
     """
-    # placeholder variable for percentage - SJ
-    percentage_change = 0.0
 
-    # algorithm go vroom to determine stock price change
+    # Define model
+    model = hmm.GaussianHMM(n_components=4, n_iter=100)
+
+    # Fit model to data
+    model.fit(prices_x_years.reshape(-1, 1))
+
+    # Predict hidden states using model
+    hidden_states = model.predict(prices_x_years.reshape(-1, 1))
+
+    # Compute mean percentage change for each hidden state
+    mean_changes = np.zeros(model.n_components)
+    for i in range(model.n_components):
+        mean_changes[i] = np.mean(np.diff(prices_x_years[hidden_states == i]) / prices_x_years[hidden_states == i][:-1])
+
+    # Predict next hidden state based on current state
+    current_state = hidden_states[-1]
+    next_state = model.predict(prices_x_years[-1].reshape(-1, 1))[0]
+
+    # Predict the percentage change in stock prices based on the current and next hidden states
+    percentage_change = mean_changes[next_state] - mean_changes[current_state]
 
     return percentage_change
 
@@ -133,7 +151,8 @@ def get_stock_percentage_change(prices_x_years):
 stock_symbol = input("Please enter a stock symbol you want to check\n").upper()
 historical_prices = get_stock_historical_prices(get_stock_data(stock_symbol))
 stock_direction, percentage_change = get_stock_direction_and_percentage_change(historical_prices)
-if (stock_direction == 1):
-    print(f'The stock price for {stock_symbol} is predicted to increase approximately {percentage_change:.2f}%.')
-else:
-    print(f'The stock price for {stock_symbol} is predicted to decrease approximately {percentage_change:.2f}%.')
+print("Percentage Change: ", percentage_change, "%")
+# if (stock_direction == 1):
+#     print(f'The stock price for {stock_symbol} is predicted to increase approximately {percentage_change:.2f}%.')
+# else:
+#     print(f'The stock price for {stock_symbol} is predicted to decrease approximately {percentage_change:.2f}%.')
