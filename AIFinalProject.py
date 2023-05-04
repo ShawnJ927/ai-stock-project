@@ -14,7 +14,8 @@ import numpy as np
 # These imports were suggested by a ChatGPT search - SJ
 # To install them on pc, I used pip install scikit-learn
 from hmmlearn import hmm
-from sklearn.linear_model import LogisticRegression 
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import MinMaxScaler 
 from sklearn.model_selection import train_test_split
 
 # This is our API Key and Time Interval for the stock data - SJ
@@ -141,6 +142,28 @@ def get_stock_percentage_change(prices_x_years):
     percentage_change = mean_changes[next_state] - mean_changes[current_state]
 
     return percentage_change
+# calculate percentage change in stock price based on neural network
+
+def get_stock_percentage_change_neural_net(prices_x_years):
+    # need to preprocess the price data
+    data_resizer = MinMaxScaler(feature_range=(0,1))
+    resized_data = data_resizer.fit_transform(prices_x_years)
+    # need to split data into training set and testing set
+
+    # create a dataset to loop through and return two np arrays 
+    
+    # fill training and test vars with new datasets  
+
+    # reshape the training and test data to be 3-dimentional
+
+    # create the neural network model
+
+    # compile the model
+
+    # fit model to data
+
+    # make a prediction of the percentage change
+
 
 # This will check the stock based on the symbol the user enters in the command line, 
 
