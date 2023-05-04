@@ -39,10 +39,14 @@ def get_stock_data(symbol):
     response = requests.get(url)
 
     # check if response is successful, may want to rewrite this - SJ
-    if response.status_code == 200:
-        stock_data = response.json()
-    else:
+    while response.status_code != 200:
         print("Error: ", response.status_code, " - response request unsuccessful")
+        symbol = input("Stock Symbol entered Invalid. Please Reenter Stock Symbol\n").upper()
+            
+        url = f"https://www.alphavantage.co/query?function=TIME_SERIES_{INTERVAL.upper()}_ADJUSTED&symbol={symbol}&outputsize=full&apikey={API_KEY}" 
+        response = requests.get(url)
+    
+    stock_data = response.json()
 
     return stock_data
 
