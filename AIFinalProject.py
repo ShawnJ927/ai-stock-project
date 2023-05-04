@@ -15,7 +15,6 @@ import numpy as np
 # These imports were suggested by a ChatGPT search - SJ
 # Not sure if we're allowed to use them or if we're supposed to build our own code for them
 # To install them on pc, I used pip install scikit-learn
-from sklearn.naive_bayes import GaussianNB
 from hmmlearn import hmm
 from sklearn.linear_model import LogisticRegression 
 from sklearn.model_selection import train_test_split
