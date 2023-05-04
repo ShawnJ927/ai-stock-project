@@ -5,15 +5,13 @@ historical stock pricing data
 
 Authors: *** INSERT EVERYONE'S NAMES HERE *** Shawn Jordan
 
-Note from Shawn - I've added initials to any comments I've made. This is just starter code
-I have come up with and might end up wildly different in the end, but hopefully it gives 
+Note from Shawn - I've added initials to any comments I've made. Hopefully it gives 
 us somewhere to start.
 """
 
 import requests
 import numpy as np
 # These imports were suggested by a ChatGPT search - SJ
-# Not sure if we're allowed to use them or if we're supposed to build our own code for them
 # To install them on pc, I used pip install scikit-learn
 from hmmlearn import hmm
 from sklearn.linear_model import LogisticRegression 
@@ -111,7 +109,7 @@ def get_stock_direction_change(prices_x_years):
     # compare the actual data vs the prediction to determine the accuracy of the model
     # I got this ide from ChatGPT
     accuracy = np.mean(y_prediction == y_test)
-    
+    print("Calculated Accuracy for LR Model:",accuracy)
     # return whether the price went up or down (binary)
     return y_prediction[0]
 
@@ -145,13 +143,14 @@ def get_stock_percentage_change(prices_x_years):
     return percentage_change
 
 # This will check the stock based on the symbol the user enters in the command line, 
-# We will need to modify this probably to check if a stock symbol is a valid one - SJ
 
 stock_symbol = input("Please enter a stock symbol you want to check\n").upper()
 historical_prices = get_stock_historical_prices(get_stock_data(stock_symbol))
 stock_direction, percentage_change = get_stock_direction_and_percentage_change(historical_prices)
+if (stock_direction == 1):
+    print ("Predicted direction of change is increasing using Logistic Regression")
+else:
+    print ("Predicted direction of change is decreasing using Logistic Regression")
+print("Using HMM:")
 print("Predicted Percentage Change of",stock_symbol,"-", percentage_change, "%")
-#if (stock_direction == 1):
-#    print('The stock price for', stock_symbol, 'is predicted to increase approximately', percentage_change,'%.')
-#else:
-#    print('The stock price for', stock_symbol, 'is predicted to decrease approximately', percentage_change,'%.')
+
