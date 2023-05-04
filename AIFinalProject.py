@@ -17,7 +17,6 @@ import numpy as np
 # To install them on pc, I used pip install scikit-learn
 from sklearn.naive_bayes import GaussianNB
 from hmmlearn import hmm
-from sklearn.naive_bayes import BernoulliNB
 from sklearn.linear_model import LogisticRegression 
 from sklearn.model_selection import train_test_split
 
@@ -34,7 +33,6 @@ def get_stock_data(symbol):
         compact - Outputs data on the set "interval" for the last 100 data points
     We can also set the interval var from DAILY to WEEKLY or MONTHLY
     """
-
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_{INTERVAL.upper()}_ADJUSTED&symbol={symbol}&outputsize=full&apikey={API_KEY}" 
     response = requests.get(url)
 
@@ -100,19 +98,17 @@ def get_stock_direction_change(prices_x_years):
     # exclude the first element from the array to make data for next day
     up_or_down = np.where(difference[1:] > 0.0, 1, 0) # if the price is > 0, return 1, else 0
     
-    gaussian_nb = GaussianNB() # gaussian naive bayes algorithm
+    logistic_regression = LogisticRegression(random_state=69) # create logistic regression model
     # input for current day's data by excluding the last element in the array
     x = difference[:-1].reshape(-1,1) 
 
-    # Use Naive Bayes Algorithm to train
-    # Split the data into training and testing data for the prediction model
-    # This is with Gaussian 
+    # Use LR to train
+    # Split the data into training and testing data for the prediction model 
     x_train, x_test, y_train, y_test = train_test_split(x, up_or_down, test_size=.2, random_state=69, shuffle=False)
-    gaussian_nb.fit(x_train, y_train)
+    logistic_regression.fit(x_train, y_train)
     
-    # Make a prediction with Gaussian Naive Bayes for next day (modified from ChatGPT)
-    y_prediction = gaussian_nb.predict(x_test)
-    print("this is the the prediction array", y_prediction)
+    # Make a prediction with LR Model for next day (modified from ChatGPT)
+    y_prediction = logistic_regression.predict(x_test)
     # compare the actual data vs the prediction to determine the accuracy of the model
     # I got this ide from ChatGPT
     accuracy = np.mean(y_prediction == y_test)
@@ -155,8 +151,8 @@ def get_stock_percentage_change(prices_x_years):
 stock_symbol = input("Please enter a stock symbol you want to check\n").upper()
 historical_prices = get_stock_historical_prices(get_stock_data(stock_symbol))
 stock_direction, percentage_change = get_stock_direction_and_percentage_change(historical_prices)
-print("Percentage Change: ", percentage_change, "%")
-# if (stock_direction == 1):
-#     print(f'The stock price for {stock_symbol} is predicted to increase approximately {percentage_change:.2f}%.')
-# else:
-#     print(f'The stock price for {stock_symbol} is predicted to decrease approximately {percentage_change:.2f}%.')
+print("Predicted Percentage Change of",stock_symbol,"-", percentage_change, "%")
+#if (stock_direction == 1):
+#    print('The stock price for', stock_symbol, 'is predicted to increase approximately', percentage_change,'%.')
+#else:
+#    print('The stock price for', stock_symbol, 'is predicted to decrease approximately', percentage_change,'%.')
