@@ -151,6 +151,5 @@ if (stock_direction == 1):
     print ("Predicted direction of change is increasing using Logistic Regression")
 else:
     print ("Predicted direction of change is decreasing using Logistic Regression")
-print("Using HMM:")
-print("Predicted Percentage Change of",stock_symbol,"-", percentage_change, "%")
+print("Using HMM: Predicted Percentage Change of",stock_symbol,"-", percentage_change, "%")
 
