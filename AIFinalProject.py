@@ -189,9 +189,9 @@ def get_stock_percentage_change_neural_net(prices_x_years):
     
     # check model accuracy
     accuracy = np.mean((predicted_percentage_change - test_y)**2)
-    print("Neural Net Calculated Mean Squared Error", accuracy)
+    print("Neural Net Calculated Mean-Squared Error", accuracy)
     accuracy = np.mean(np.abs(predicted_percentage_change - test_y))
-    print("Neural Net Calculated Mean Absolute Error", accuracy)
+    print("Neural Net Calculated Mean-Absolute Error", accuracy)
 
     return predicted_percentage_change
 
