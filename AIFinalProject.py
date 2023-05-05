@@ -3,7 +3,7 @@ This is an AI Project designed train an AI which will determine whether a stock 
 increase or decrease and the percentage change of the price by training the AI through 
 historical stock pricing data. 3 models are used, Logistic Regression, HMM, and Neural Network
 
-Contributors: Shawn Jordan, Nathan Ngo, Sohail Quadir
+Contributors: Shawn Jordan, Nathan Ngo, Sohail Quadir, Deepak Kolli
 
 Note from Shawn to team - I've added initials to any comments I've made. Hopefully it gives 
 us somewhere to start.
